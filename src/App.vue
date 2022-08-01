@@ -22,7 +22,11 @@
             <input type="text" name="title" required lay-verify="required" placeholder="请输入验证码" autocomplete="off"
                    class="layui-input">
           </div>
-          <div class="layui-form-mid" v-html="svg"></div>
+          <div
+              class="layui-form-mid"
+              v-html="svg"
+              @click="getCaptcha()"
+          ></div>
         </div>
         <button type="button" class="layui-btn">点击登录</button>
         <a href="" class="imooc-link">忘记密码</a>
@@ -43,15 +47,20 @@ export default {
     }
   },
   mounted() {
-    axios.get('http://localhost:3000/getCaptcha').then(res => {
-      console.log(res);
-      if (res.status === 200) {
-        let obj = res.data;
-        if (obj.code === 200) {
-          this.svg = obj.data;
+    this.getCaptcha();
+  },
+  methods: {
+    getCaptcha() {
+      axios.get('http://localhost:3000/getCaptcha').then(res => {
+        console.log(res);
+        if (res.status === 200) {
+          let obj = res.data;
+          if (obj.code === 200) {
+            this.svg = obj.data;
+          }
         }
-      }
-    });
+      });
+    },
   }
 }
 
